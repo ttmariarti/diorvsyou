@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import PhonebookContext from '../context/PhonebookContext.jsx';
 
-export default function Filter({ value, onChange }) {
+export default function Filter() {
+  const { filter, setFilter } = useContext(PhonebookContext);
+
   return (
     <label>
       Find contacts by name
       <input
         type="text"
-        value={value}
-        onChange={event => onChange(event.target.value)}
+        value={filter}
+        onChange={event => setFilter(event.target.value)}
       />
     </label>
   );

@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import ContactForm from './components/ContactForm.jsx';
 import ContactList from './components/ContactList.jsx';
 import Filter from './components/Filter.jsx';
+import PhonebookContext from './context/PhonebookContext.jsx';
 import useLocalStorage from './hooks/useLocalStorage.js';
 
 export default function App() {
@@ -39,13 +40,23 @@ export default function App() {
   );
 
   return (
-    <div>
-      <h1>Phonebook</h1>
-      <ContactForm onSubmit={addContact} />
+    <PhonebookContext.Provider
+      value={{
+        contacts: visibleContacts,
+        addContact,
+        deleteContact,
+        filter,
+        setFilter,
+      }}
+    >
+      <div>
+        <h1>Phonebook</h1>
+        <ContactForm />
 
-      <h2>Contacts</h2>
-      <Filter value={filter} onChange={setFilter} />
-      <ContactList contacts={visibleContacts} onDelete={deleteContact} />
-    </div>
+        <h2>Contacts</h2>
+        <Filter />
+        <ContactList />
+      </div>
+    </PhonebookContext.Provider>
   );
 }

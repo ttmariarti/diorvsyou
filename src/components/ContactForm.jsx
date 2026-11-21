@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
+import PhonebookContext from '../context/PhonebookContext.jsx';
 
-export default function ContactForm({ onSubmit }) {
+export default function ContactForm() {
+  const { addContact } = useContext(PhonebookContext);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const nameInputRef = useRef(null);
 
   const handleChange = event => {
     const { name: fieldName, value } = event.target;
@@ -15,11 +18,12 @@ export default function ContactForm({ onSubmit }) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    const wasAdded = onSubmit({ name, number });
+    const wasAdded = addContact({ name, number });
 
     if (wasAdded) {
       setName('');
       setNumber('');
+      nameInputRef.current?.focus();
     }
   };
 
@@ -30,6 +34,7 @@ export default function ContactForm({ onSubmit }) {
         <input
           type="text"
           name="name"
+          ref={nameInputRef}
           pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
